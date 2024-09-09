@@ -1,78 +1,73 @@
-import React, {useState, useContext} from 'react';
-
+import React, { useState, useContext } from 'react';
 import Logo from '../../olx-logo.png';
 import './Signup.css';
 import { FirebaseContext } from '../../store/FirebaseContext';
 
 export default function Signup() {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
-  const {firebase} = useContext(FirebaseContext)
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const { app, auth, firestore } = useContext(FirebaseContext);
 
-  const handleSubmit = (e)=>{
-    e.preventDefault()
-    console.log(firebase)
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(app, auth, firestore);
+  };
 
   return (
     <div>
       <div className="signupParentDiv">
-        <img width="200px" height="200px" src={Logo}></img>
+        <img width="200px" height="200px" src={Logo} alt="Logo"></img>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="fname">Username</label>
+          <label htmlFor="username">Username</label>
           <br />
           <input
             className="input"
             type="text"
             value={username}
-            onChange={(e)=>setUsername(e.target.value)}
-            id="fname"
-            name="name"
-            defaultValue="John"
+            onChange={(e) => setUsername(e.target.value)}
+            id="username"
+            name="username"
           />
           <br />
-          <label htmlFor="fname">Email</label>
+          <label htmlFor="email">Email</label>
           <br />
           <input
             className="input"
             type="email"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-            id="fname"
+            onChange={(e) => setEmail(e.target.value)}
+            id="email"
             name="email"
-            defaultValue="John"
           />
           <br />
-          <label htmlFor="lname">Phone</label>
+          <label htmlFor="phone">Phone</label>
           <br />
           <input
             className="input"
-            type="number"
+            type="tel"
             value={phone}
-            onChange={(e)=>setPhone(e.target.value)}
-            id="lname"
+            onChange={(e) => setPhone(e.target.value)}
+            id="phone"
             name="phone"
-            defaultValue="Doe"
           />
           <br />
-          <label htmlFor="lname">Password</label>
+          <label htmlFor="password">Password</label>
           <br />
           <input
             className="input"
             type="password"
             value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-            id="lname"
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
             name="password"
-            defaultValue="Doe"
           />
           <br />
           <br />
-          <button>Signup</button>
+          <button type="submit">Signup</button>
         </form>
-        <a>Login</a>
+        <a href="/login">Login</a>
       </div>
     </div>
   );
