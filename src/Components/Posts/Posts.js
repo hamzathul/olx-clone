@@ -7,18 +7,43 @@ import { FirebaseContext } from '../../store/Context';
 function Posts() {
 const {firestore} = useContext(FirebaseContext)
 const [products, setProducts] = useState([])
-useEffect(()=>{
-  firestore.collection('products').get().then((snapshot)=>{
-    const allPost = snapshot.docs.map((product)=>{
-      return{
-        ...product.data,
-        id:product.id
+useEffect(() => {
+  const fetchData = async () => {
+    
+      // Fetch the collection
+      const snapshot = await firestore.collection('products').get();
 
-      }
-    })
-    console.log(allPost)
-  })
-},[])
+      // Map the documents to an array of post objects and log each step
+      const allPost = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          ...data,
+          id: doc.id
+        };
+      });
+
+      // console.log("All Posts:", allPost);
+
+      // Update state with fetched data
+      setProducts(allPost);
+    
+  };
+
+  fetchData();
+}, [firestore]);
+
+// useEffect(()=>{
+//   firestore.collection('products').get().then((snapshot)=>{
+//     const allPost = snapshot.docs.map((product)=>{
+//       return{
+//         ...product.data,
+//         id:product.id
+
+//       }
+//     })
+//     console.log(allPost)
+//   })
+// },[])
   return (
     <div className="postParentDiv">
       <div className="moreView">
@@ -27,14 +52,16 @@ useEffect(()=>{
           <span>View more</span>
         </div>
         <div className="cards">
-          <div
+
+          {products.map(product=>{
+            return <div
             className="card"
           >
             <div className="favorite">
               <Heart></Heart>
             </div>
             <div className="image">
-              <img src="../../../Images/R15V3.jpg" alt="" />
+              <img src={product.url} alt="" />
             </div>
             <div className="content">
               <p className="rate">&#x20B9; 250000</p>
@@ -45,6 +72,10 @@ useEffect(()=>{
               <span>Tue May 04 2021</span>
             </div>
           </div>
+
+          })
+            }
+
         </div>
       </div>
       <div className="recommendations">
