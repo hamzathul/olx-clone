@@ -2,7 +2,7 @@ import React, { Fragment,useContext,useState } from 'react';
 import './Create.css';
 import Header from '../Header/Header';
 import {FirebaseContext, AuthContext} from '../../store/Context'
-import { firestore } from '../../firebase/config';
+import {useHistory} from 'react-router-dom'
 const Create = () => {
   const {storage, firestore} = useContext(FirebaseContext)
   const {user} = useContext(AuthContext)
@@ -11,6 +11,7 @@ const Create = () => {
   const[price, setPrice] = useState('')
   const[image, setImage] = useState(null)
   const date = new Date()
+  const history = useHistory()
   const handleSubmit = ()=>{
     storage.ref(`/image/${image.name}`).put(image).then(({ref})=>{
       ref.getDownloadURL().then((url)=>{
@@ -23,6 +24,7 @@ const Create = () => {
           userId:user.uid,
           createdAt:date.toDateString()
         })
+        history.push('/')
       })
     })
   }
